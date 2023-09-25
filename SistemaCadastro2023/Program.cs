@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 class Program
 {
     struct TipoBanda
@@ -36,20 +37,64 @@ class Program
         }// fim for
     }// fim lista
 
+    static void salvarDados(List<TipoBanda> bandas, string nomeArquivo)
+    {
+
+        using (StreamWriter writer = new StreamWriter(nomeArquivo))
+        {
+            foreach (TipoBanda banda in bandas)
+            {
+                writer.WriteLine($"{banda.nome},{banda.genero},{banda.integrantes},{banda.ranking}");
+            }
+        }
+        Console.WriteLine("Dados salvos com sucesso!");
+        
+     
+    }
+
+    static void carregarDados(List<TipoBanda> bandas, string nomeArquivo)
+    {
+        if (File.Exists(nomeArquivo))
+        {
+            string[] linhas = File.ReadAllLines(nomeArquivo);
+            foreach (string linha in linhas)
+            {
+                string[] campos = linha.Split(',');
+                TipoBanda banda = new TipoBanda
+                {
+                    nome = campos[0],
+                    genero = campos[1],
+                    integrantes = int.Parse(campos[2]),
+                    ranking = int.Parse(campos[3])
+                };
+                bandas.Add(banda);
+            }
+            Console.WriteLine("Dados carregados com sucesso!");
+        }
+        else
+        {
+            Console.WriteLine("Arquivo não encontrado :(");
+        }
+    }
+
     static int menu()
     {
+        Console.WriteLine("*** Sistema de Cadastros Rock4U ***");
         Console.WriteLine("1-Adicionar banda");
         Console.WriteLine("2-Listar");
+        Console.WriteLine("0-Sair");
+        Console.Write("Entre com uma opção:");
         int op = Convert.ToInt32(Console.ReadLine());
         return op;
     }
     static void Main()
     {
         List<TipoBanda> listadeBandas = new List<TipoBanda>();
-
-        while (true)
+        int op;
+        carregarDados(listadeBandas, "dados.txt");
+        do
         {
-            int op = menu();
+            op = menu();
             switch (op)
             {
                 case 1:
@@ -58,13 +103,14 @@ class Program
                 case 2:
                     listaBandas(listadeBandas);
                     break;
+                case 0: Console.WriteLine("Saindo");
+                        salvarDados(listadeBandas, "dados.txt");
+                    break;
             }// fim switch
             Console.ReadKey();// pausa
             Console.Clear(); // limpa
-        }// fim while
+        } while (op != 0);// fim while
 
-        //--------------------
-        // Mostrar os dados
 
         Console.ReadLine();//pause antes de fechar
     }
