@@ -52,6 +52,24 @@ class Program
             }// fim else
         }// fim for
     }// fim lista
+     //----------------------------
+    static void buscarNome(List<TipoBanda> lista, string nomeBusca)
+    {
+        int qtd = lista.Count();
+        for (int i = 0; i < qtd; i++)
+        {
+            if (lista[i].nome.ToUpper().Contains(nomeBusca.ToUpper() ) )
+            {
+                Console.WriteLine("\t*** Dados da banda ***");
+                Console.WriteLine("Nome:" + lista[i].nome);
+                Console.WriteLine("Genero:" + lista[i].genero);
+                Console.WriteLine("Integrantes:" + lista[i].integrantes);
+                Console.WriteLine("Ranking:" + lista[i].ranking);
+               // break;
+            }// fim 
+        }// fim for
+    }// fim funcao
+
 
     static void salvarDados(List<TipoBanda> bandas, string nomeArquivo)
     {
@@ -99,6 +117,7 @@ class Program
         Console.WriteLine("1-Adicionar banda");
         Console.WriteLine("2-Listar");
         Console.WriteLine("3-Filtrar por ranking");
+        Console.WriteLine("4-Buscar por nome");
         Console.WriteLine("0-Sair");
         Console.Write("Entre com uma opção:");
         int op = Convert.ToInt32(Console.ReadLine());
@@ -123,6 +142,10 @@ class Program
                 case 3: Console.Write("Ranking para filtro:");
                         int idRanking = Convert.ToInt32(Console.ReadLine());
                         listarRanking(listadeBandas, idRanking);
+                    break;
+                case 4:Console.Write("Nome para busca:");
+                       string nomeBusca = Console.ReadLine();
+                       buscarNome(listadeBandas, nomeBusca);
                     break;
                 case 0: Console.WriteLine("Saindo");
                         salvarDados(listadeBandas, "dados.txt");
