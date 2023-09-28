@@ -58,18 +58,45 @@ class Program
         int qtd = lista.Count();
         for (int i = 0; i < qtd; i++)
         {
-            if (lista[i].nome.ToUpper().Contains(nomeBusca.ToUpper() ) )
+            if (lista[i].nome.ToUpper().Contains(nomeBusca.ToUpper()))
             {
                 Console.WriteLine("\t*** Dados da banda ***");
                 Console.WriteLine("Nome:" + lista[i].nome);
                 Console.WriteLine("Genero:" + lista[i].genero);
                 Console.WriteLine("Integrantes:" + lista[i].integrantes);
                 Console.WriteLine("Ranking:" + lista[i].ranking);
-               // break;
+                // break;
             }// fim 
+            
         }// fim for
     }// fim funcao
+    //----------------------
+    static void alterarBanda(List<TipoBanda> lista, string nomeBusca)
+    {
+        int qtd = lista.Count();
+        bool flag = false;
+        for (int i = 0; i < qtd; i++)
+        {
+            if (lista[i].nome.ToUpper().Equals(nomeBusca.ToUpper()))
+            {
+                flag = true;
+                TipoBanda novaBanda = new TipoBanda();// declarando uma variavel do TipoBanda
+                Console.Write("Novo nome da banda:");
+                novaBanda.nome = Console.ReadLine();
+                Console.Write("Novo genero da banda:");
+                novaBanda.genero = Console.ReadLine();
+                Console.Write("Nova qtde de integrantes:");
+                novaBanda.integrantes = Convert.ToInt32(Console.ReadLine());
+                Console.Write("Novo ranking:");
+                novaBanda.ranking = Convert.ToInt32(Console.ReadLine());
+                lista[i] = novaBanda;
 
+            }// fim 
+        }// fim for
+        if (!flag) // flag==false
+            Console.WriteLine("Banda não encontrada");
+
+    }// fim funcao
 
     static void salvarDados(List<TipoBanda> bandas, string nomeArquivo)
     {
@@ -81,7 +108,7 @@ class Program
                 writer.WriteLine($"{banda.nome},{banda.genero},{banda.integrantes},{banda.ranking}");
             }
         }
-        Console.WriteLine("Dados salvos com sucesso!");
+        Console.WriteLine("Dados salvos com sucesso!"); 
         
      
     }
@@ -118,6 +145,9 @@ class Program
         Console.WriteLine("2-Listar");
         Console.WriteLine("3-Filtrar por ranking");
         Console.WriteLine("4-Buscar por nome");
+        Console.WriteLine("5-Buscar pelo genero");
+        Console.WriteLine("6-Alterar");
+        Console.WriteLine("7-Remover");
         Console.WriteLine("0-Sair");
         Console.Write("Entre com uma opção:");
         int op = Convert.ToInt32(Console.ReadLine());
@@ -146,6 +176,11 @@ class Program
                 case 4:Console.Write("Nome para busca:");
                        string nomeBusca = Console.ReadLine();
                        buscarNome(listadeBandas, nomeBusca);
+                    break;
+                case 6:
+                    Console.Write("Nome da banda para alterar:");
+                    nomeBusca = Console.ReadLine();
+                    alterarBanda(listadeBandas, nomeBusca);
                     break;
                 case 0: Console.WriteLine("Saindo");
                         salvarDados(listadeBandas, "dados.txt");
