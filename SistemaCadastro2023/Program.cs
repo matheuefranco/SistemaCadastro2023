@@ -70,6 +70,28 @@ class Program
             
         }// fim for
     }// fim funcao
+     //----------------------
+    static void removerBanda(List<TipoBanda> lista, string nomeBusca)
+    {
+        int qtd = lista.Count();
+        for (int i = 0; i < qtd; i++)
+        {
+            if (lista[i].nome.ToUpper().Equals(nomeBusca.ToUpper()) )
+            {
+                Console.Write($"Tem certeza que deseja remover a banda {nomeBusca}?[S/N]: ");
+                char resp;
+                resp =Convert.ToChar( Console.ReadLine() );
+                if (resp == 'S') { 
+                    lista.RemoveAt(i);
+                    Console.WriteLine("Banda removida com sucesso");
+                    break;
+                }
+                else
+                    Console.WriteLine("Operação Cancelada");
+            }// fim 
+
+        }// fim for
+    }// fim funcao
     //----------------------
     static void alterarBanda(List<TipoBanda> lista, string nomeBusca)
     {
@@ -97,6 +119,16 @@ class Program
             Console.WriteLine("Banda não encontrada");
 
     }// fim funcao
+
+    static int somaIntegrantes(List<TipoBanda> lista)
+    {
+        int soma = 0;
+        for(int i = 0; i < lista.Count(); i++)
+        {
+            soma += lista[i].integrantes;
+        }
+         return soma;
+    }
 
     static void salvarDados(List<TipoBanda> bandas, string nomeArquivo)
     {
@@ -148,6 +180,7 @@ class Program
         Console.WriteLine("5-Buscar pelo genero");
         Console.WriteLine("6-Alterar");
         Console.WriteLine("7-Remover");
+        Console.WriteLine("8-Total Integrantes");
         Console.WriteLine("0-Sair");
         Console.Write("Entre com uma opção:");
         int op = Convert.ToInt32(Console.ReadLine());
@@ -182,6 +215,13 @@ class Program
                     nomeBusca = Console.ReadLine();
                     alterarBanda(listadeBandas, nomeBusca);
                     break;
+                case 7:
+                    Console.Write("Nome da banda para remover:");
+                    nomeBusca = Console.ReadLine();
+                    removerBanda(listadeBandas, nomeBusca);
+                    break;
+                case 8: Console.WriteLine("Total de integrantes:" + somaIntegrantes);
+                        break;
                 case 0: Console.WriteLine("Saindo");
                         salvarDados(listadeBandas, "dados.txt");
                     break;
